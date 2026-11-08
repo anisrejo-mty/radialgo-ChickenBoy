@@ -3,237 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RadialGo - Comandas y Envíos a Domicilio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Chicken Boy - Pedidos RadialGo</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #f3f3f3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #161616;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #262626;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        h1 {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #ff9f0a;
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #ff9f0a;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #262626;
+            padding-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
+        input:focus, textarea:focus {
+            border-color: #ff9f0a;
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            background: #ff9f0a;
+            color: #000;
+            font-weight: bold;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #e58e05;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1f1f1f;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #2a2a2a;
+        }
+        .menu-info {
+            flex-grow: 1;
+        }
+        .menu-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .menu-price {
+            font-size: 0.85rem;
+            color: #ff9f0a;
+        }
+        .counter-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .counter-btn {
+            background: #333;
+            color: #fff;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .counter-btn:active {
+            background: #ff9f0a;
+            color: #000;
+        }
+        .counter-value {
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+        .summary-box {
+            background: #1f1f1f;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        .total-box {
+            background: #262626;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            border: 1px solid #ff9f0a;
+        }
+        .total-box span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff9f0a;
+        }
+    </style>
 </head>
-<body class="bg-[#0a0a0a] text-white min-h-screen p-4 flex justify-center items-start font-sans">
+<body>
 
-    <div class="w-full max-w-lg bg-[#121212] border border-gray-800/80 rounded-2xl p-6 shadow-2xl my-6">
-        
-        <!-- ENCABEZADO / BRANDING -->
-        <div class="text-center mb-6">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400 font-black text-xl mb-2">
-                R
-            </div>
-            <h1 id="tituloNegocio" class="text-2xl font-black text-white tracking-wide">Nombre del Negocio</h1>
-            <p class="text-xs text-amber-400 font-semibold uppercase tracking-wider mt-1">Impulsado por RadialGo</p>
-        </div>
+<div class="container">
+    <h1>CHICKEN BOY</h1>
+    <p class="subtitle">IMPULSADO POR RADIAL GO</p>
 
-        <!-- 1. DATOS DEL CLIENTE -->
-        <div class="space-y-3 mb-6">
-            <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider">1. Tus Datos de Entrega</h2>
-            <input type="text" id="nombreCliente" placeholder="Tu Nombre Completo" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
-            <input type="tel" id="telefonoCliente" placeholder="Teléfono / WhatsApp de contacto" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
-            <input type="text" id="calleNumero" placeholder="Calle y Número (#)" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
-            <input type="text" id="colonia" placeholder="Colonia" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
-            <input type="text" id="referencia" placeholder="Entre qué calles / Referencias visuales" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
-        </div>
+    <!-- 1. DATOS DE ENTREGA -->
+    <div class="section-title">1. TUS DATOS DE ENTREGA</div>
+    <input type="text" id="nombre" placeholder="Tu Nombre Completo">
+    <input type="tel" id="telefono" placeholder="Teléfono / WhatsApp de contacto">
+    <input type="text" id="calle" placeholder="Calle y Número (#)">
+    <input type="text" id="colonia" placeholder="Colonia">
+    <input type="text" id="referencias" placeholder="Entre qué calles / Referencias visuales">
 
-        <!-- 2. UBICACIÓN Y ENVÍO -->
-        <div class="mb-6 bg-[#181818] p-4 rounded-xl border border-gray-800">
-            <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">2. Ubicación y Envío</h2>
-            <button onclick="calcularEnvioGPS()" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold py-3 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10">
-                📍 Usar mi ubicación GPS actual
-            </button>
-            <div id="infoEnvio" class="mt-3 text-sm text-gray-300 text-center hidden">
-                Distancia: <span id="txtDistancia" class="font-bold text-white">0 km</span> | 
-                Costo Envío: <span id="txtCostoEnvio" class="font-bold text-amber-400">$0 MXN</span>
-            </div>
-        </div>
-
-        <!-- 3. DETALLE DEL PEDIDO -->
-        <div class="space-y-3 mb-6">
-            <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider">3. ¿Qué vas a ordenar?</h2>
-            <textarea id="detallePedido" rows="3" placeholder="Escribe tus platillos o productos y cantidades (Ej. 2 Hamburguesas, 1 Refresco...)" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition"></textarea>
-            
-            <div class="flex items-center justify-between bg-[#181818] p-3 rounded-xl border border-gray-800">
-                <span class="text-xs text-gray-300">Costo total de productos ($):</span>
-                <input type="number" id="subtotalProductos" placeholder="0" oninput="calcularTotalGeneral()" class="w-32 bg-[#1a1a1a] border border-gray-800 p-2 rounded-xl text-sm text-white text-center font-bold outline-none">
-            </div>
-        </div>
-
-        <!-- 4. FORMA DE PAGO -->
-        <div class="space-y-3 mb-6">
-            <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider">4. Forma de Pago</h2>
-            <div class="grid grid-cols-2 gap-3">
-                <button type="button" onclick="seleccionarMetodoPago('Efectivo')" id="btnEfectivo" class="bg-[#181818] border border-amber-500 text-amber-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition">
-                    💵 Efectivo
-                </button>
-                <button type="button" onclick="seleccionarMetodoPago('Transferencia')" id="btnTransferencia" class="bg-[#181818] border border-gray-800 text-gray-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition">
-                    💳 Transferencia
-                </button>
-            </div>
-
-            <!-- DATOS BANCARIOS (Opcional) -->
-            <div id="boxTransferencia" class="hidden bg-[#181818] border border-amber-500/30 p-4 rounded-xl space-y-1 text-xs font-mono">
-                <p class="font-bold text-amber-400 mb-2">Datos para Transferir:</p>
-                <p class="text-gray-300">Banco: <span id="lblBanco" class="text-white">BBVA</span></p>
-                <p class="text-gray-300">CLABE: <span id="lblClabe" class="text-white font-bold select-all">123456789012345678</span></p>
-                <p class="text-gray-300">Titular: <span id="lblTitular" class="text-white">Nombre del Local</span></p>
-            </div>
-        </div>
-
-        <!-- TOTAL GENERAL -->
-        <div class="bg-[#181818] border border-gray-800 p-4 rounded-xl mb-6 text-center">
-            <p class="text-xs text-gray-400 uppercase tracking-wider">Total a pagar (Productos + Envío)</p>
-            <p id="totalGeneral" class="text-3xl font-black text-amber-400 mt-1">$0 MXN</p>
-        </div>
-
-        <!-- BOTÓN DE REVISIÓN -->
-        <button onclick="mostrarModalRevision()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-blue-600/20">
-            🔍 Revisar y Confirmar Pedido
-        </button>
-
+    <!-- 2. UBICACIÓN Y ENVÍO -->
+    <div class="section-title">2. UBICACIÓN Y ENVÍO GPS</div>
+    <button class="btn" type="button" onclick="obtenerUbicacion()" style="background: #222; color: #ff9f0a; border: 1px solid #ff9f0a;">📍 Usar mi ubicación GPS actual</button>
+    <div class="summary-box" id="info-envio" style="text-align: center; margin-top: 8px;">
+        Distancia: <span id="txt-distancia">0 km</span> | Costo Envío: <span id="txt-costo-envio">$0 MXN</span>
     </div>
 
-    <!-- VENTANA MODAL DE REVISIÓN PREVIA -->
-    <div id="modalRevision" class="hidden fixed inset-0 bg-black/85 flex items-center justify-center p-4 z-50">
-        <div class="bg-[#121212] border border-gray-800 p-6 rounded-2xl w-full max-w-md shadow-2xl">
-            <h2 class="text-lg font-bold text-amber-400 mb-1 text-center">Confirmación de Comanda</h2>
-            <p class="text-xs text-gray-400 text-center mb-4">Vista previa lista para reenviar al repartidor:</p>
-            
-            <div id="resumenComandaTexto" class="bg-[#1a1a1a] border border-gray-800 p-4 rounded-xl text-xs space-y-1 text-gray-300 max-h-60 overflow-y-auto mb-6 font-mono"></div>
-
-            <div class="flex gap-3">
-                <button onclick="enviarComandaWhatsApp()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl text-xs transition">
-                    ✅ Enviar a WhatsApp
-                </button>
-                <button onclick="cerrarModalRevision()" class="flex-1 bg-[#1a1a1a] hover:bg-gray-800 text-gray-300 font-bold py-3 rounded-xl text-xs transition border border-gray-800">
-                    ✏️ Corregir
-                </button>
-            </div>
+    <!-- 3. MENÚ DE PRODUCTOS -->
+    <div class="section-title">3. SELECCIONA TU PEDIDO</div>
+    
+    <div class="menu-item" data-price="200" data-name="Pollo Asado">
+        <div class="menu-info"><div class="menu-name">Pollo Asado</div><div class="menu-price">$200 MXN</div></div>
+        <div class="counter-controls">
+            <button class="counter-btn" onclick="cambiarCantidad(this, -1)">-</button>
+            <span class="counter-value">0</span>
+            <button class="counter-btn" onclick="cambiarCantidad(this, 1)">+</button>
         </div>
     </div>
 
-    <script>
-        // ==========================================================
-        // CONFIGURACIÓN DEL NEGOCIO (Personaliza por cliente)
-        // ==========================================================
-        const CONFIG_LOCAL = {
-            nombre: "Taquería El Fogón",
-            telefonoWA: "528112393650",
-            latBase: 25.6811,
-            lngBase: -100.2528,
-            banco: "BBVA",
-            clabe: "123456789012345678",
-            titular: "Juan Pérez García"
-        };
+    <div class="menu-item" data-price="110" data-name="Medio Pollo">
+        <div class="menu-info"><div class="menu-name">Medio Pollo</div><div class="menu-price">$110 MXN</div></div>
+        <div class="counter-controls">
+            <button class="counter-btn" onclick="cambiarCantidad(this, -1)">-</button>
+            <span class="counter-value">0</span>
+            <button class="counter-btn" onclick="cambiarCantidad(this, 1)">+</button>
+        </div>
+    </div>
 
-        document.getElementById('tituloNegocio').innerText = CONFIG_LOCAL.nombre;
-        document.getElementById('lblBanco').innerText = CONFIG_LOCAL.banco;
-        document.getElementById('lblClabe').innerText = CONFIG_LOCAL.clabe;
-        document.getElementById('lblTitular').innerText = CONFIG_LOCAL.titular;
+    <div class="menu-item" data-price="360" data-name="Kilo Costilla y Flecha">
+        <div class="menu-info"><div class="menu-name">Kilo Costilla y Flecha</div><div class="menu-price">$360 MXN</div></div>
+        <div class="counter-controls">
+            <button class="counter-btn" onclick="cambiarCantidad(this, -1)">-</button>
+            <span class="counter-value">0</span>
+            <button class="counter-btn" onclick="cambiarCantidad(this, 1)">+</button>
+        </div>
+    </div>
 
-        let costoEnvioCalculado = 0;
-        let distanciaKm = 0;
-        let metodoPagoSeleccionado = "Efectivo";
-        let mensajeWhatsAppFinal = "";
+    <div class="menu-item" data-price="200" data-name="Medio Kilo Costilla y Flecha">
+        <div class="menu-info"><div class="menu-name">Medio Kilo Costilla y Flecha</div><div class="menu-price">$200 MXN</div></div>
+        <div class="counter-controls">
+            <button class="counter-btn" onclick="cambiarCantidad(this, -1)">-</button>
+            <span class="counter-value">0</span>
+            <button class="counter-btn" onclick="cambiarCantidad(this, 1)">+</button>
+        </div>
+    </div>
 
-        function seleccionarMetodoPago(metodo) {
-            metodoPagoSeleccionado = metodo;
-            const btnEf = document.getElementById('btnEfectivo');
-            const btnTr = document.getElementById('btnTransferencia');
-            const boxTr = document.getElementById('boxTransferencia');
+    <div class="menu-item" data-price="15" data-name="Salchicha Asada c/u">
+        <div class="menu-info"><div class="menu-name">Salchicha Asada c/u</div><div class="menu-price">$15 MXN</div></div>
+        <div class="counter-controls">
+            <button class="counter-btn" onclick="cambiarCantidad(this, -1)">-</button>
+            <span class="counter-value">0</span>
+            <button class="counter-btn" onclick="cambiarCantidad(this, 1)">+</button>
+        </div>
+    </div>
 
-            if (metodo === 'Efectivo') {
-                btnEf.className = "bg-[#181818] border border-amber-500 text-amber-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition";
-                btnTr.className = "bg-[#181818] border border-gray-800 text-gray-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition";
-                boxTr.classList.add('hidden');
-            } else {
-                btnTr.className = "bg-[#181818] border border-amber-500 text-amber-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition";
-                btnEf.className = "bg-[#181818] border border-gray-800 text-gray-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition";
-                boxTr.classList.remove('hidden');
+    <div class="summary-box">
+        Subtotal Comida: <strong id="subtotal-comida">$0 MXN</strong>
+    </div>
+
+    <!-- 4. FORMA DE PAGO -->
+    <div class="section-title">4. FORMA DE PAGO</div>
+    <div style="display: flex; gap: 10px;">
+        <button type="button" class="btn" id="btn-efectivo" onclick="setPago('Efectivo')" style="background: #222; color: #fff; border: 1px solid #444;">💵 Efectivo</button>
+        <button type="button" class="btn" id="btn-trans" onclick="setPago('Transferencia')" style="background: #222; color: #fff; border: 1px solid #444;">💳 Transferencia</button>
+    </div>
+
+    <!-- TOTAL GENERAL -->
+    <div class="total-box">
+        TOTAL A PAGAR (INCLUYE ENVÍO)<br>
+        <span id="total-general">$0 MXN</span>
+    </div>
+
+    <button class="btn" onclick="enviarPedido()" style="background: #25D366; color: #000; font-size: 1.1rem; margin-top: 20px;">📲 Enviar Pedido por WhatsApp</button>
+</div>
+
+<script>
+    // Coordenadas fijas del local Chicken Boy (Aprox Guadalupe, NL)
+    const localLat = 25.6800; 
+    const localLng = -100.2500;
+    let costoEnvioActual = 35; // Tarifa base por defecto
+    let distanciaKm = 0;
+    let formaPagoSeleccionada = 'Efectivo';
+
+    function cambiarCantidad(btn, cambio) {
+        const counterVal = btn.parentElement.querySelector('.counter-value');
+        let val = parseInt(counterVal.textContent) + cambio;
+        if (val < 0) val = 0;
+        counterVal.textContent = val;
+        calcularTotales();
+    }
+
+    function calcularTotales() {
+        let subtotal = 0;
+        const items = document.querySelectorAll('.menu-item');
+        items.forEach(item => {
+            const precio = parseFloat(item.getAttribute('data-price'));
+            const cantidad = parseInt(item.querySelector('.counter-value').textContent);
+            subtotal += precio * cantidad;
+        });
+
+        document.getElementById('subtotal-comida').textContent = `$${subtotal} MXN`;
+        const totalGeneral = subtotal + costoEnvioActual;
+        document.getElementById('total-general').textContent = `$${totalGeneral} MXN`;
+    }
+
+    function setPago(metodo) {
+        formaPagoSeleccionada = metodo;
+        document.getElementById('btn-efectivo').style.borderColor = metodo === 'Efectivo' ? '#ff9f0a' : '#444';
+        document.getElementById('btn-trans').style.borderColor = metodo === 'Transferencia' ? '#ff9f0a' : '#444';
+    }
+
+    function obtenerUbicacion() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+                
+                // Cálculo Haversine de distancia
+                distanciaKm = calcularDistanciaHaversine(localLat, localLng, userLat, userLng);
+                
+                // Regla de envío: Base $35 hasta 3km, luego +$10 por km extra
+                if (distanciaKm <= 3) {
+                    costoEnvioActual = 35;
+                } else {
+                    costoEnvioActual = 35 + Math.ceil(distanciaKm - 3) * 10;
+                }
+
+                document.getElementById('txt-distancia').textContent = `${distanciaKm.toFixed(1)} km`;
+                document.getElementById('txt-costo-envio').textContent = `$${costoEnvioActual} MXN`;
+                calcularTotales();
+            }, () => {
+                alert("No se pudo obtener tu ubicación GPS. Asegúrate de activarla.");
+            });
+        } else {
+            alert("Tu navegador no soporta geolocalización.");
+        }
+    }
+
+    function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Radio de la tierra en km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    function enviarPedido() {
+        const nombre = document.getElementById('nombre').value;
+        const telefono = document.getElementById('telefono').value;
+        const calle = document.getElementById('calle').value;
+        const colonia = document.getElementById('colonia').value;
+        const referencias = document.getElementById('referencias').value;
+
+        if(!nombre || !telefono || !calle) {
+            alert("Por favor llena al menos tu Nombre, Teléfono y Dirección.");
+            return;
+        }
+
+        let detallePedido = "";
+        let subtotal = 0;
+        const items = document.querySelectorAll('.menu-item');
+        items.forEach(item => {
+            const nombreProd = item.getAttribute('data-name');
+            const precio = parseFloat(item.getAttribute('data-price'));
+            const cantidad = parseInt(item.querySelector('.counter-value').textContent);
+            if (cantidad > 0) {
+                detallePedido += `▪️ ${cantidad}x ${nombreProd} ($${precio * cantidad} MXN)\n`;
+                subtotal += precio * cantidad;
             }
+        });
+
+        if (subtotal === 0) {
+            alert("Por favor selecciona al menos un producto de tu menú.");
+            return;
         }
 
-        function calcularEnvioGPS() {
-            if (!navigator.geolocation) {
-                alert("Tu navegador no soporta geolocalización.");
-                return;
-            }
+        const totalFinal = subtotal + costoEnvioActual;
+        const negocioWhatsApp = "8112393650"; // Tu número o el del negocio
 
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    distanciaKm = haversine(CONFIG_LOCAL.latBase, CONFIG_LOCAL.lngBase, pos.coords.latitude, pos.coords.longitude);
-                    
-                    const TARIFA_BASE = 35;
-                    const KM_INCLUIDOS = 3;
-                    const COSTO_KM_EXTRA = 10;
+        const mensaje = `*¡NUEVO PEDIDO - CHICKEN BOY!* 🍗\n\n` +
+                        `👤 *Cliente:* ${nombre}\n` +
+                        `📞 *Teléfono:* ${telefono}\n` +
+                        `🏠 *Dirección:* ${calle}, Col. ${colonia}\n` +
+                        `📍 *Referencias:* ${referencias}\n` +
+                        `📏 *Distancia:* ${distanciaKm.toFixed(1)} km\n\n` +
+                        `📋 *PEDIDO:*\n${detallePedido}\n` +
+                        `🍔 *Subtotal Comida:* $${subtotal} MXN\n` +
+                        `🛵 *Costo de Envio:* $${costoEnvioActual} MXN\n` +
+                        `💵 *TOTAL A PAGAR:* $${totalFinal} MXN\n` +
+                        `💳 *Forma de Pago:* ${formaPagoSeleccionada}`;
 
-                    if (distanciaKm <= KM_INCLUIDOS) {
-                        costoEnvioCalculado = TARIFA_BASE;
-                    } else {
-                        costoEnvioCalculado = TARIFA_BASE + (Math.ceil(distanciaKm - KM_INCLUIDOS) * COSTO_KM_EXTRA);
-                    }
+        const urlWsp = `https://api.whatsapp.com/send?phone=${negocioWhatsApp}&text=${encodeURIComponent(mensaje)}`;
+        window.open(urlWsp, '_blank');
+    }
+</script>
 
-                    document.getElementById('txtDistancia').innerText = `${distanciaKm.toFixed(1)} km`;
-                    document.getElementById('txtCostoEnvio').innerText = `$${costoEnvioCalculado} MXN`;
-                    document.getElementById('infoEnvio').classList.remove('hidden');
-
-                    calcularTotalGeneral();
-                },
-                () => alert("Por favor activa tu GPS para calcular el envío automáticamente.")
-            );
-        }
-
-        function calcularTotalGeneral() {
-            const subtotal = parseFloat(document.getElementById('subtotalProductos').value) || 0;
-            const total = subtotal + costoEnvioCalculado;
-            document.getElementById('totalGeneral').innerText = `$${total} MXN`;
-        }
-
-        function mostrarModalRevision() {
-            const nombre = document.getElementById('nombreCliente').value.trim();
-            const telefono = document.getElementById('telefonoCliente').value.trim();
-            const calle = document.getElementById('calleNumero').value.trim();
-            const colonia = document.getElementById('colonia').value.trim();
-            const referencia = document.getElementById('referencia').value.trim();
-            const pedido = document.getElementById('detallePedido').value.trim();
-            const subtotal = parseFloat(document.getElementById('subtotalProductos').value) || 0;
-            const totalFinal = subtotal + costoEnvioCalculado;
-
-            if (!nombre || !telefono || !calle || !pedido) {
-                alert("Por favor completa tu nombre, teléfono, dirección y tu pedido antes de revisar.");
-                return;
-            }
-
-            mensajeWhatsAppFinal = `🛵 *COMANDA - ${CONFIG_LOCAL.nombre.toUpperCase()}*%0A` +
-                                   `━━━━━━━━━━━━━━━━━━%0A` +
-                                   `👤 *Cliente:* ${nombre}%0A` +
-                                   `📞 *Teléfono:* ${telefono}%0A` +
-                                   `🏠 *Dirección:* ${calle}, Col. ${colonia}%0A` +
-                                   `📍 *Referencias:* ${referencia || 'Ninguna'}%0A` +
-                                   `📏 *Distancia:* ${distanciaKm.toFixed(1)} km%0A` +
-                                   `━━━━━━━━━━━━━━━━━━%0A` +
-                                   `🛒 *PEDIDO:*%0A${pedido}%0A` +
-                                   `━━━━━━━━━━━━━━━━━━%0A` +
-                                   `💵 *Subtotal:* $${subtotal} MXN%0A` +
-                                   `🛵 *Envío:* $${costoEnvioCalculado} MXN%0A` +
-                                   `💰 *TOTAL A COBRAR:* $${totalFinal} MXN%0A` +
-                                   `💳 *Pago:* ${metodoPagoSeleccionado}`;
-
-            document.getElementById('resumenComandaTexto').innerHTML = mensajeWhatsAppFinal.replace(/%0A/g, '<br>').replace(/\*/g, '');
-            document.getElementById('modalRevision').classList.remove('hidden');
-        }
-
-        function cerrarModalRevision() {
-            document.getElementById('modalRevision').classList.add('hidden');
-        }
-
-        function enviarComandaWhatsApp() {
-            window.open(`https://wa.me/${CONFIG_LOCAL.telefonoWA}?text=${mensajeWhatsAppFinal}`, '_blank');
-            cerrarModalRevision();
-        }
-
-        function haversine(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon/2) * Math.sin(dLon/2);
-            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
-        }
-    </script>
 </body>
 </html>
