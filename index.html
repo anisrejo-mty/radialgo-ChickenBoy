@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RadialGo - Comandas y Envíos a Domicilio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#0a0a0a] text-white min-h-screen p-4 flex justify-center items-start font-sans">
+
+    <div class="w-full max-w-lg bg-[#121212] border border-gray-800/80 rounded-2xl p-6 shadow-2xl my-6">
+        
+        <!-- ENCABEZADO / BRANDING -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400 font-black text-xl mb-2">
+                R
+            </div>
+            <h1 id="tituloNegocio" class="text-2xl font-black text-white tracking-wide">Nombre del Negocio</h1>
+            <p class="text-xs text-amber-400 font-semibold uppercase tracking-wider mt-1">Impulsado por RadialGo</p>
+        </div>
+
+        <!-- 1. DATOS DEL CLIENTE -->
+        <div class="space-y-3 mb-6">
+            <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider">1. Tus Datos de Entrega</h2>
+            <input type="text" id="nombreCliente" placeholder="Tu Nombre Completo" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
+            <input type="tel" id="telefonoCliente" placeholder="Teléfono / WhatsApp de contacto" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
+            <input type="text" id="calleNumero" placeholder="Calle y Número (#)" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
+            <input type="text" id="colonia" placeholder="Colonia" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
+            <input type="text" id="referencia" placeholder="Entre qué calles / Referencias visuales" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition">
+        </div>
+
+        <!-- 2. UBICACIÓN Y ENVÍO -->
+        <div class="mb-6 bg-[#181818] p-4 rounded-xl border border-gray-800">
+            <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">2. Ubicación y Envío</h2>
+            <button onclick="calcularEnvioGPS()" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold py-3 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10">
+                📍 Usar mi ubicación GPS actual
+            </button>
+            <div id="infoEnvio" class="mt-3 text-sm text-gray-300 text-center hidden">
+                Distancia: <span id="txtDistancia" class="font-bold text-white">0 km</span> | 
+                Costo Envío: <span id="txtCostoEnvio" class="font-bold text-amber-400">$0 MXN</span>
+            </div>
+        </div>
+
+        <!-- 3. DETALLE DEL PEDIDO -->
+        <div class="space-y-3 mb-6">
+            <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider">3. ¿Qué vas a ordenar?</h2>
+            <textarea id="detallePedido" rows="3" placeholder="Escribe tus platillos o productos y cantidades (Ej. 2 Hamburguesas, 1 Refresco...)" class="w-full bg-[#1a1a1a] border border-gray-800 p-3 rounded-xl text-sm text-white focus:border-amber-500 outline-none transition"></textarea>
+            
+            <div class="flex items-center justify-between bg-[#181818] p-3 rounded-xl border border-gray-800">
+                <span class="text-xs text-gray-300">Costo total de productos ($):</span>
+                <input type="number" id="subtotalProductos" placeholder="0" oninput="calcularTotalGeneral()" class="w-32 bg-[#1a1a1a] border border-gray-800 p-2 rounded-xl text-sm text-white text-center font-bold outline-none">
+            </div>
+        </div>
+
+        <!-- 4. FORMA DE PAGO -->
+        <div class="space-y-3 mb-6">
+            <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider">4. Forma de Pago</h2>
+            <div class="grid grid-cols-2 gap-3">
+                <button type="button" onclick="seleccionarMetodoPago('Efectivo')" id="btnEfectivo" class="bg-[#181818] border border-amber-500 text-amber-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                    💵 Efectivo
+                </button>
+                <button type="button" onclick="seleccionarMetodoPago('Transferencia')" id="btnTransferencia" class="bg-[#181818] border border-gray-800 text-gray-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                    💳 Transferencia
+                </button>
+            </div>
+
+            <!-- DATOS BANCARIOS (Opcional) -->
+            <div id="boxTransferencia" class="hidden bg-[#181818] border border-amber-500/30 p-4 rounded-xl space-y-1 text-xs font-mono">
+                <p class="font-bold text-amber-400 mb-2">Datos para Transferir:</p>
+                <p class="text-gray-300">Banco: <span id="lblBanco" class="text-white">BBVA</span></p>
+                <p class="text-gray-300">CLABE: <span id="lblClabe" class="text-white font-bold select-all">123456789012345678</span></p>
+                <p class="text-gray-300">Titular: <span id="lblTitular" class="text-white">Nombre del Local</span></p>
+            </div>
+        </div>
+
+        <!-- TOTAL GENERAL -->
+        <div class="bg-[#181818] border border-gray-800 p-4 rounded-xl mb-6 text-center">
+            <p class="text-xs text-gray-400 uppercase tracking-wider">Total a pagar (Productos + Envío)</p>
+            <p id="totalGeneral" class="text-3xl font-black text-amber-400 mt-1">$0 MXN</p>
+        </div>
+
+        <!-- BOTÓN DE REVISIÓN -->
+        <button onclick="mostrarModalRevision()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-blue-600/20">
+            🔍 Revisar y Confirmar Pedido
+        </button>
+
+    </div>
+
+    <!-- VENTANA MODAL DE REVISIÓN PREVIA -->
+    <div id="modalRevision" class="hidden fixed inset-0 bg-black/85 flex items-center justify-center p-4 z-50">
+        <div class="bg-[#121212] border border-gray-800 p-6 rounded-2xl w-full max-w-md shadow-2xl">
+            <h2 class="text-lg font-bold text-amber-400 mb-1 text-center">Confirmación de Comanda</h2>
+            <p class="text-xs text-gray-400 text-center mb-4">Vista previa lista para reenviar al repartidor:</p>
+            
+            <div id="resumenComandaTexto" class="bg-[#1a1a1a] border border-gray-800 p-4 rounded-xl text-xs space-y-1 text-gray-300 max-h-60 overflow-y-auto mb-6 font-mono"></div>
+
+            <div class="flex gap-3">
+                <button onclick="enviarComandaWhatsApp()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl text-xs transition">
+                    ✅ Enviar a WhatsApp
+                </button>
+                <button onclick="cerrarModalRevision()" class="flex-1 bg-[#1a1a1a] hover:bg-gray-800 text-gray-300 font-bold py-3 rounded-xl text-xs transition border border-gray-800">
+                    ✏️ Corregir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================================
+        // CONFIGURACIÓN DEL NEGOCIO (Personaliza por cliente)
+        // ==========================================================
+        const CONFIG_LOCAL = {
+            nombre: "Taquería El Fogón",
+            telefonoWA: "528112393650",
+            latBase: 25.6811,
+            lngBase: -100.2528,
+            banco: "BBVA",
+            clabe: "123456789012345678",
+            titular: "Juan Pérez García"
+        };
+
+        document.getElementById('tituloNegocio').innerText = CONFIG_LOCAL.nombre;
+        document.getElementById('lblBanco').innerText = CONFIG_LOCAL.banco;
+        document.getElementById('lblClabe').innerText = CONFIG_LOCAL.clabe;
+        document.getElementById('lblTitular').innerText = CONFIG_LOCAL.titular;
+
+        let costoEnvioCalculado = 0;
+        let distanciaKm = 0;
+        let metodoPagoSeleccionado = "Efectivo";
+        let mensajeWhatsAppFinal = "";
+
+        function seleccionarMetodoPago(metodo) {
+            metodoPagoSeleccionado = metodo;
+            const btnEf = document.getElementById('btnEfectivo');
+            const btnTr = document.getElementById('btnTransferencia');
+            const boxTr = document.getElementById('boxTransferencia');
+
+            if (metodo === 'Efectivo') {
+                btnEf.className = "bg-[#181818] border border-amber-500 text-amber-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition";
+                btnTr.className = "bg-[#181818] border border-gray-800 text-gray-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition";
+                boxTr.classList.add('hidden');
+            } else {
+                btnTr.className = "bg-[#181818] border border-amber-500 text-amber-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition";
+                btnEf.className = "bg-[#181818] border border-gray-800 text-gray-400 font-bold p-3 rounded-xl text-xs flex items-center justify-center gap-2 transition";
+                boxTr.classList.remove('hidden');
+            }
+        }
+
+        function calcularEnvioGPS() {
+            if (!navigator.geolocation) {
+                alert("Tu navegador no soporta geolocalización.");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    distanciaKm = haversine(CONFIG_LOCAL.latBase, CONFIG_LOCAL.lngBase, pos.coords.latitude, pos.coords.longitude);
+                    
+                    const TARIFA_BASE = 35;
+                    const KM_INCLUIDOS = 3;
+                    const COSTO_KM_EXTRA = 10;
+
+                    if (distanciaKm <= KM_INCLUIDOS) {
+                        costoEnvioCalculado = TARIFA_BASE;
+                    } else {
+                        costoEnvioCalculado = TARIFA_BASE + (Math.ceil(distanciaKm - KM_INCLUIDOS) * COSTO_KM_EXTRA);
+                    }
+
+                    document.getElementById('txtDistancia').innerText = `${distanciaKm.toFixed(1)} km`;
+                    document.getElementById('txtCostoEnvio').innerText = `$${costoEnvioCalculado} MXN`;
+                    document.getElementById('infoEnvio').classList.remove('hidden');
+
+                    calcularTotalGeneral();
+                },
+                () => alert("Por favor activa tu GPS para calcular el envío automáticamente.")
+            );
+        }
+
+        function calcularTotalGeneral() {
+            const subtotal = parseFloat(document.getElementById('subtotalProductos').value) || 0;
+            const total = subtotal + costoEnvioCalculado;
+            document.getElementById('totalGeneral').innerText = `$${total} MXN`;
+        }
+
+        function mostrarModalRevision() {
+            const nombre = document.getElementById('nombreCliente').value.trim();
+            const telefono = document.getElementById('telefonoCliente').value.trim();
+            const calle = document.getElementById('calleNumero').value.trim();
+            const colonia = document.getElementById('colonia').value.trim();
+            const referencia = document.getElementById('referencia').value.trim();
+            const pedido = document.getElementById('detallePedido').value.trim();
+            const subtotal = parseFloat(document.getElementById('subtotalProductos').value) || 0;
+            const totalFinal = subtotal + costoEnvioCalculado;
+
+            if (!nombre || !telefono || !calle || !pedido) {
+                alert("Por favor completa tu nombre, teléfono, dirección y tu pedido antes de revisar.");
+                return;
+            }
+
+            mensajeWhatsAppFinal = `🛵 *COMANDA - ${CONFIG_LOCAL.nombre.toUpperCase()}*%0A` +
+                                   `━━━━━━━━━━━━━━━━━━%0A` +
+                                   `👤 *Cliente:* ${nombre}%0A` +
+                                   `📞 *Teléfono:* ${telefono}%0A` +
+                                   `🏠 *Dirección:* ${calle}, Col. ${colonia}%0A` +
+                                   `📍 *Referencias:* ${referencia || 'Ninguna'}%0A` +
+                                   `📏 *Distancia:* ${distanciaKm.toFixed(1)} km%0A` +
+                                   `━━━━━━━━━━━━━━━━━━%0A` +
+                                   `🛒 *PEDIDO:*%0A${pedido}%0A` +
+                                   `━━━━━━━━━━━━━━━━━━%0A` +
+                                   `💵 *Subtotal:* $${subtotal} MXN%0A` +
+                                   `🛵 *Envío:* $${costoEnvioCalculado} MXN%0A` +
+                                   `💰 *TOTAL A COBRAR:* $${totalFinal} MXN%0A` +
+                                   `💳 *Pago:* ${metodoPagoSeleccionado}`;
+
+            document.getElementById('resumenComandaTexto').innerHTML = mensajeWhatsAppFinal.replace(/%0A/g, '<br>').replace(/\*/g, '');
+            document.getElementById('modalRevision').classList.remove('hidden');
+        }
+
+        function cerrarModalRevision() {
+            document.getElementById('modalRevision').classList.add('hidden');
+        }
+
+        function enviarComandaWhatsApp() {
+            window.open(`https://wa.me/${CONFIG_LOCAL.telefonoWA}?text=${mensajeWhatsAppFinal}`, '_blank');
+            cerrarModalRevision();
+        }
+
+        function haversine(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+        }
+    </script>
+</body>
+</html>
